@@ -1,0 +1,120 @@
+<section class="hero" id="solutions">
+  <div class="hero-content">
+    <p class="eyebrow">{{ i18n.t('hero.eyebrow') }}</p>
+    <h1>{{ i18n.t('hero.title') }}</h1>
+    <p class="hero-copy">{{ i18n.t('hero.copy') }}</p>
+    <div class="hero-actions">
+      <a class="button button-primary" href="#generator" (click)="activeWorkspace = 'generate'">{{ i18n.t('hero.create') }}</a>
+      <button class="button button-secondary" type="button" (click)="activeWorkspace = 'scan'"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"></path></svg>{{ i18n.t('hero.validate') }}</button>
+    </div>
+  </div>
+</section>
+
+<section class="generator" id="generator" [attr.aria-label]="i18n.t('workspace.generate')">
+  @if (activeWorkspace === 'generate') {
+    <section class="generator-step">
+      <div class="step-heading">
+        <span class="step-badge">{{ i18n.t('step.one') }}</span>
+        <div><h2>{{ i18n.t('generator.chooseTitle') }}</h2><p>{{ i18n.t('generator.chooseCopy') }}</p></div>
+      </div>
+
+      <div class="type-picker" role="list" [attr.aria-label]="i18n.t('generator.chooseTitle')">
+        @for (type of qrTypes; track type.id) {
+          <button type="button" class="type-tile" [class.is-selected]="selectedType === type.id" (click)="selectType(type)" [attr.aria-pressed]="selectedType === type.id">
+            <span class="type-icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">@for (path of type.paths; track $index) {<path [attr.d]="path"></path>}</svg></span><span>{{ i18n.t(type.labelKey) }}</span>
+          </button>
+        }
+      </div>
+
+      <form [formGroup]="generateForm" (ngSubmit)="generate()" novalidate>
+        <div class="mode-picker" [attr.aria-label]="i18n.t('workspace.generate')">
+          <button type="button" [class.is-selected]="mode === 'static'" (click)="selectMode('static')"><span class="radio-dot" aria-hidden="true"></span><strong>{{ i18n.t('generator.static') }}</strong><small>{{ i18n.t('generator.staticCopy') }}</small></button>
+          <button type="button" [class.is-selected]="mode === 'dynamic'" (click)="selectMode('dynamic')"><span class="radio-dot" aria-hidden="true"></span><strong>{{ i18n.t('generator.dynamic') }}</strong><small>{{ i18n.t('generator.dynamicCopy') }}</small></button>
+        </div>
+
+        <label class="input-label" for="qr-data">{{ i18n.t('generator.data', { type: i18n.t(selectedTypeDetails.labelKey) }) }}</label>
+        <input id="qr-data" class="data-input" type="text" formControlName="data" [placeholder]="i18n.t(selectedTypeDetails.hintKey)" autocomplete="off" dir="ltr">
+        @if (generateForm.controls['data'].touched && generateForm.controls['data'].invalid) {
+          <p class="field-error" role="alert">{{ i18n.t('generator.required') }}</p>
+        }
+
+        <div class="dimension-row">
+          <label>{{ i18n.t('generator.width') }} <input type="number" formControlName="width" min="128" max="1000" inputmode="numeric" dir="ltr"></label>
+          <label>{{ i18n.t('generator.height') }} <input type="number" formControlName="height" min="128" max="1000" inputmode="numeric" dir="ltr"></label>
+        </div>
+
+        <div class="action-row">
+          <button class="button button-primary" type="submit" [disabled]="isGenerating">{{ isGenerating ? i18n.t('generator.generating') : i18n.t('generator.generate') }}</button>
+          <p class="assistive-copy">{{ i18n.t('generator.offline') }}</p>
+        </div>
+      </form>
+    </section>
+
+    <section class="generator-step customize-step">
+      <div class="step-heading">
+        <span class="step-badge">{{ i18n.t('step.two') }}</span>
+        <div><h2>{{ i18n.t('customize.title') }}</h2><p>{{ i18n.t('customize.copy') }}</p></div>
+      </div>
+
+      <div class="customize-layout">
+        <div>
+          <div class="customize-tabs" role="tablist" [attr.aria-label]="i18n.t('customize.title')">
+            @for (tab of ['pattern', 'eyes', 'colors', 'frame', 'templates']; track tab) {
+              <button type="button" [class.is-active]="selectedCustomizer === tab" (click)="selectedCustomizer = tab">{{ i18n.t('customize.' + tab) }}</button>
+            }
+          </div>
+          <div class="customize-panel">
+            @if (selectedCustomizer === 'colors') {
+              <label>{{ i18n.t('customize.foreground') }} <input type="color" [(ngModel)]="foregroundColor" [ngModelOptions]="{ standalone: true }"></label>
+              <label>{{ i18n.t('customize.background') }} <input type="color" [(ngModel)]="backgroundColor" [ngModelOptions]="{ standalone: true }"></label>
+            } @else if (selectedCustomizer === 'frame') {
+              <label>{{ i18n.t('customize.frameLabel') }} <input type="text" [(ngModel)]="frameLabel" [ngModelOptions]="{ standalone: true }" maxlength="32"></label>
+            } @else {
+              <p>{{ i18n.t('customize.prepares', { name: i18n.t('customize.' + selectedCustomizer) }) }}</p>
+            }
+          </div>
+        </div>
+
+        <aside class="preview-card" [style.--qr-foreground]="foregroundColor" [style.--qr-background]="backgroundColor">
+          <p class="preview-label">{{ i18n.t('preview.live') }}</p>
+          @if (generatedBarcode) {
+            <div class="qr-preview"><img [src]="'data:image/png;base64,' + generatedBarcode.imageBase64" [alt]="i18n.t('preview.alt', { type: i18n.t(selectedTypeDetails.labelKey) })"></div>
+            @if (selectedCustomizer === 'frame') { <p class="frame-label">{{ frameLabel }}</p> }
+            <button class="button button-primary" type="button" (click)="download()">{{ i18n.t('preview.download') }}</button>
+          } @else {
+            <div class="placeholder-qr" [attr.aria-label]="i18n.t('preview.live')"><span></span><span></span><span></span></div>
+            <p>{{ i18n.t('preview.empty') }}</p>
+          }
+        </aside>
+      </div>
+    </section>
+  } @else {
+    <section class="generator-step validator">
+      <div class="step-heading">
+        <span class="step-badge">{{ i18n.t('step.check') }}</span>
+        <div><h2>{{ i18n.t('validator.title') }}</h2><p>{{ i18n.t('validator.copy') }}</p></div>
+      </div>
+      <form [formGroup]="validateForm" (ngSubmit)="validate()" novalidate>
+        <label class="upload-zone" for="qr-image">
+          <input id="qr-image" type="file" accept="image/png,image/jpeg,image/webp" (change)="onQrImageSelected($event)">
+          <span class="upload-icon" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 8 5-5 5 5"></path><path d="M12 3v12"></path></svg></span>
+          <strong>{{ uploadedFileName || i18n.t('validator.chooseImage') }}</strong>
+          <small>{{ i18n.t('validator.fileHint') }}</small>
+        </label>
+        <label class="input-label" for="expected-data">{{ i18n.t('validator.expected') }}</label>
+        <input id="expected-data" class="data-input" type="text" formControlName="expectedData" [placeholder]="i18n.t('validator.expectedPlaceholder')" dir="ltr">
+        <button class="button button-primary" type="submit" [disabled]="isValidating || !validateForm.controls['imageBase64'].value">{{ isValidating ? i18n.t('validator.validating') : i18n.t('validator.validate') }}</button>
+      </form>
+      @if (validationResult) {
+        <div class="validation-result" [class.is-valid]="validationResult.isValid" [class.is-invalid]="!validationResult.isValid" role="status">
+          <strong>{{ validationResult.isValid ? i18n.t('validator.valid') : i18n.t('validator.invalid') }}</strong>
+          @if (validationResult.detectedFormat) { <span>{{ i18n.t('validator.format', { value: validationResult.detectedFormat }) }}</span> }
+          @if (validationResult.decodedData) { <span>{{ i18n.t('validator.content', { value: validationResult.decodedData }) }}</span> }
+        </div>
+      }
+    </section>
+  }
+
+  @if (statusMessage) { <p class="status-message" aria-live="polite">{{ statusMessage }}</p> }
+  @if (errorMessage) { <p class="error-banner" role="alert">{{ errorMessage }}</p> }
+</section>

@@ -1,0 +1,4 @@
+{
+  "targets": ["api", "web", "panel", "app"],
+  "stageRoot": "karavi/karavi.publish.files"
+}

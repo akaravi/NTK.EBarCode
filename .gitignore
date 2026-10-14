@@ -1,0 +1,93 @@
+# --- karavi (starter-kit) ---
+karavi/karavi.logs/
+karavi/karavi.deploy.files/
+karavi/karavi.build.files/
+karavi/karavi.publish.files/
+karavi/karavi.status/*.html
+!karavi/karavi.status/*.example.html
+karavi/karavi.logs/.check-logs-state.json
+.agents
+.claude
+.codex
+.cursor
+.freebuff
+graphify-out/
+#freebuff
+.freebuff/*
+
+#graphify
+
+# --- .NET / ASP.NET Core ---
+**/bin/
+**/obj/
+**/debug/
+**/release/
+**/packages/
+**/.vs/
+**/.vscode/
+**/*.user
+**/*.suo
+**/*.userosscache
+**/*.sln.docstates
+**/*.pdb
+**/*.cache
+**/*.log
+**/TestResults/
+**/publish/
+**/artifacts/
+
+# --- Angular / Node.js ---
+**/node_modules/
+**/dist/
+**/coverage/
+**/.angular/
+**/.cache/
+**/.parcel-cache/
+**/npm-debug.log*
+**/pnpm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --- secrets / local config ---
+**/*.local.json
+**/*.Development.json
+**/*.production.json
+**/*.secrets.json
+appsettings.Local.json
+**/appsettings*.json
+**/NLog*.config
+**/nlog*.config
+**/web.config
+.env
+.env.*
+
+# --- generated / temp ---
+**/*.tmp
+**/*.temp
+**/*.bak
+**/*.orig
+
+# Playwright
+**/playwright-report/
+**/test-results/
+**/blob-report/
+**/playwright/.cache/
+# Graphify local knowledge graph
+graphify-out/
+**/graphify-out/
+
+# --- karavi ---
+karavi/karavi.temp.logs/
+karavi/karavi.temp.status/
+karavi/karavi.temp.deploy/
+karavi/karavi.temp.build/
+karavi/karavi.deploy.config/Deploy_FTP.info
+karavi/karavi.deploy.config/Deploy_TestUsers.info
+karavi/karavi.deploy.config/deploy.secrets.json
+.omp/
+.freebuff/

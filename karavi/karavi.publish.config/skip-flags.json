@@ -1,0 +1,6 @@
+{
+  "SkipFlutter": false,
+  "SkipZip": false,
+  "SkipAndroid": true,
+  "SkipExtension": true
+}

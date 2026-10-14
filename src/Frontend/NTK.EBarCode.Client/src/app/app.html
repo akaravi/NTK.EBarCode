@@ -1,0 +1,29 @@
+<header class="site-header">
+  <a class="brand" routerLink="/" aria-label="NTK EBarCode">
+    <span class="brand-mark" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="8" height="8" rx="1.2"></rect><rect x="14" y="2" width="8" height="8" rx="1.2"></rect><rect x="2" y="14" width="8" height="8" rx="1.2"></rect><rect x="14" y="14" width="3.5" height="3.5" rx=".7"></rect><rect x="18.5" y="18.5" width="3.5" height="3.5" rx=".7"></rect></svg></span>
+    <span>NTK<span class="brand-accent">.</span>EBARCODE</span>
+  </a>
+
+  <nav class="site-nav" [attr.aria-label]="i18n.t('nav.products')">
+    <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">{{ i18n.t('nav.products') }}</a>
+    <a routerLink="/" fragment="solutions">{{ i18n.t('nav.solutions') }}</a>
+    <a routerLink="/about" routerLinkActive="is-active">{{ i18n.t('nav.learn') }}</a>
+    <a routerLink="/about" fragment="pricing">{{ i18n.t('nav.pricing') }}</a>
+    <a routerLink="/contact" routerLinkActive="is-active">{{ i18n.t('nav.faq') }}</a>
+  </nav>
+
+  <div class="site-actions">
+    <a routerLink="/contact">{{ i18n.t('nav.login') }}</a>
+    <a class="register-link" routerLink="/contact">{{ i18n.t('nav.register') }}</a>
+    <button class="language-button" type="button" (click)="i18n.toggle()" [attr.aria-label]="i18n.t('nav.switchLanguage')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg><span>{{ i18n.t('nav.language') }}</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></button>
+  </div>
+</header>
+
+<main>
+  <router-outlet />
+</main>
+
+<footer class="site-footer">
+  <span>© 2026 NTK.EBarCode</span>
+  <span>{{ i18n.t('footer.tagline') }}</span>
+</footer>

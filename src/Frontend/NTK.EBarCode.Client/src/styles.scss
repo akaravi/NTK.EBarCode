@@ -1,0 +1,142 @@
+/* ------------------------------------------------------------------
+   NTK.EBarCode - Global design tokens (Dark Mode)
+   Palette: slate (dark, low-emission) + green run accent
+   Typography: IBM Plex Sans (UI) + JetBrains Mono (code/labels)
+------------------------------------------------------------------- */
+
+:root {
+  color-scheme: dark;
+
+  /* Core palette (Dark Mode / OLED-friendly) */
+  --background: #0f172a;          /* slate-900   page background */
+  --surface: #1b2336;             /* elevated card background   */
+  --surface-2: #232b40;           /* hover / active surface     */
+  --muted: #272f42;               /* muted area                 */
+  --text-primary: #f8fafc;        /* slate-50    primary text   */
+  --text-muted: #94a3b8;          /* slate-400   secondary text */
+  --border: #33415530;            /* soft translucent border    */
+  --border-strong: #475569;
+  --ring: #22c55e;
+
+  /* Accent / CTA */
+  --accent: #22c55e;              /* green-500 "run" accent     */
+  --on-accent: #0f172a;           /* dark text on accent        */
+  --accent-hover: #37d669;
+
+  /* Status colors */
+  --success: #22c55e;
+  --warning: #fbbf24;
+  --danger: #ef4444;
+  --info: #38bdf8;
+
+  /* Typography */
+  --font-heading: "IBM Plex Sans", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --font-code: "JetBrains Mono", "SFMono-Regular", Menlo, monospace;
+
+  /* Spacing (4px base grid) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  /* Shadows (dark surfaces lift with light emission) */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 14px 40px rgba(0, 0, 0, 0.55);
+
+  /* Border radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+}
+
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--background);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--text-primary);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  color: inherit;
+}
+
+input, select, textarea {
+  font-family: var(--font-body);
+  color: var(--text-primary);
+}
+
+/* Visible, consistent keyboard focus */
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Utility classes */
+.btn-primary {
+  background-color: var(--accent);
+  color: var(--on-accent);
+  border: none;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

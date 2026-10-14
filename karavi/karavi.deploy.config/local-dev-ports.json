@@ -1,0 +1,23 @@
+{
+  "productId": "NTK.EBarCode",
+  "portRange": {
+    "min": 51720,
+    "max": 51739
+  },
+  "hosts": {
+    "backend": {
+      "host": "localhost",
+      "port": 51720,
+      "httpsPort": 51721,
+      "note": "NTK.EBarCode.Api — /health"
+    },
+    "frontend": {
+      "host": "localhost",
+      "port": 51722,
+      "note": "Angular NTK.EBarCode.Client — ng serve"
+    }
+  },
+  "notes": {
+    "portRange": "All application local-dev ports allocated in 51720-51739 (canonical range for this project)"
+  }
+}

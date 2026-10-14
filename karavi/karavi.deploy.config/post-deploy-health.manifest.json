@@ -1,0 +1,5 @@
+{
+  "smokeUrls": [
+    { "id": "web-health", "url": "https://ebarcode.ir/health", "environment": "production" }
+  ]
+}

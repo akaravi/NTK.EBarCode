@@ -1,0 +1,24 @@
+{
+  "pathsRelativeToRepoRoot": [
+    "publish/",
+    "artifacts/",
+    ".run-logs/",
+    "karavi/karavi.build.files/",
+    "karavi/karavi.deploy.files/",
+    "karavi/karavi.publish.files/",
+    "LastRunInfo.html",
+    "Deploy_Summary.html"
+  ],
+  "deepExtra": [
+    "**/bin/",
+    "**/obj/",
+    "**/.dart_tool/"
+  ],
+  "preserve": [
+    "karavi/karavi.history/",
+    "karavi/karavi.deploy.config/",
+    "karavi/karavi.build.config/",
+    "karavi/karavi.publish.config/",
+    "karavi/karavi.scripts/"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "Release": {
+      "dotnet": { "configuration": "Release", "rid": "win-x64", "projectPath": "src/Backend/NTK.EBarCode.Api/NTK.EBarCode.Api.csproj" },
+      "angular": { "configuration": "production", "projectPath": "src/Frontend/NTK.EBarCode.Client" },
+      "flutter": { "webFlags": ["--release", "--no-web-resources-cdn"] }
+    },
+    "Debug": {
+      "dotnet": { "configuration": "Debug", "rid": "win-x64", "projectPath": "src/Backend/NTK.EBarCode.Api/NTK.EBarCode.Api.csproj" },
+      "angular": { "configuration": "development", "projectPath": "src/Frontend/NTK.EBarCode.Client" },
+      "flutter": { "webFlags": ["--no-web-resources-cdn"] }
+    }
+  },
+  "enabledStacks": ["dotnet", "angular"]
+}

@@ -1,0 +1,31 @@
+.contact-container {
+  max-width: 992px;
+  margin: 0 auto;
+  padding: var(--space-10) var(--space-4);
+  min-height: 100vh;
+}
+
+h1 {
+  color: var(--text-primary);
+  font-size: 36px;
+  margin-bottom: var(--space-6);
+  text-align: center;
+}
+
+.contact-content {
+  background-color: var(--surface);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+
+  p {
+    color: #cbd5e1;
+    font-size: 16px;
+
+    a {
+      color: var(--accent);
+    }
+  }
+}

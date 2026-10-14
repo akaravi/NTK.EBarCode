@@ -1,0 +1,115 @@
+name: Publish to Plesk
+
+on:
+  push:
+    tags:
+      - publish
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-plesk-ebarcode
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Build and publish EBarCode Plesk branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout published tag
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+
+      - name: Enable pnpm
+        shell: bash
+        run: |
+          set -euo pipefail
+          corepack enable
+          corepack install --global pnpm@11.25.0
+          pnpm --version
+
+      - name: Restore API
+        run: dotnet restore src/Backend/NTK.EBarCode.Api/NTK.EBarCode.Api.csproj --runtime win-x64
+
+      - name: Build API
+        run: dotnet build src/Backend/NTK.EBarCode.Api/NTK.EBarCode.Api.csproj --configuration Release --no-restore --nologo
+
+      - name: Install frontend dependencies
+        working-directory: src/Frontend/NTK.EBarCode.Client
+        run: pnpm install --frozen-lockfile
+
+      - name: Build production frontend
+        working-directory: src/Frontend/NTK.EBarCode.Client
+        run: pnpm exec ng build --configuration production
+
+      - name: Publish Windows x64 API and assemble payload
+        shell: bash
+        env:
+          API_PROJECT: src/Backend/NTK.EBarCode.Api/NTK.EBarCode.Api.csproj
+          WEB_DIST: src/Frontend/NTK.EBarCode.Client/dist/NTK.EBarCode.Client/browser
+          STAGING: ${{ runner.temp }}/ebarcode-plesk-staging
+          API_DIST: ${{ runner.temp }}/ebarcode-api-publish
+        run: |
+          set -euo pipefail
+          rm -rf "$STAGING" "$API_DIST"
+          dotnet publish "$API_PROJECT" \
+            --configuration Release \
+            --no-restore \
+            --runtime win-x64 \
+            --self-contained false \
+            --output "$API_DIST" \
+            /p:UseAppHost=false
+          rm -rf "$API_DIST/wwwroot"
+          mkdir -p "$API_DIST/wwwroot"
+          cp -a "$WEB_DIST"/. "$API_DIST/wwwroot"/
+          mkdir -p "$STAGING"
+          cp -a "$API_DIST"/. "$STAGING"/
+
+          # These files belong to the Plesk server and must not ship.
+          find "$STAGING" -type f \
+            \( -iname 'appsettings*.json' -o -iname 'nlog*.config' -o -iname 'web.config' -o -iname '.env*' \) \
+            -print -delete
+
+          if find "$STAGING" -type f -iname '*.php' -print -quit | grep -q .; then
+            echo 'PHP artifact detected in deployment payload' >&2
+            exit 1
+          fi
+          if find "$STAGING" -type d -path '*/runtimes/*' \
+            ! -path '*/runtimes/win-x64' ! -path '*/runtimes/win-x64/*' \
+            -print -quit | grep -q .; then
+            echo 'Unsupported runtime asset detected in deployment payload' >&2
+            exit 1
+          fi
+
+          printf '%s\n' "${GITHUB_REF_NAME}" > "$STAGING/.published-tag"
+          printf '%s\n' "${GITHUB_SHA}" > "$STAGING/.published-commit"
+
+      - name: Publish branch for Plesk ebarcode.ir
+        shell: bash
+        env:
+          STAGING: ${{ runner.temp }}/ebarcode-plesk-staging
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git -C "$STAGING" init -q
+          git -C "$STAGING" config user.name 'github-actions[bot]'
+          git -C "$STAGING" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C "$STAGING" add --all
+          git -C "$STAGING" commit -qm "Publish $GITHUB_REF_NAME to Plesk ebarcode.ir"
+          git -C "$STAGING" branch -M plesk/ebarcode
+          git -C "$STAGING" remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git -C "$STAGING" push --force origin plesk/ebarcode

@@ -1,0 +1,6 @@
+@NTK.EBarCode.Api_HostAddress = http://localhost:5276
+
+GET {{NTK.EBarCode.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,7 @@
+{
+  "mappings": {
+    "api": { "ftpKey": "httpdocs_api", "localDir": "karavi/karavi.deploy.files/api" },
+    "web": { "ftpKey": "httpdocs_web", "localDir": "karavi/karavi.deploy.files/web" },
+    "panel": { "ftpKey": "httpdocs_panel", "localDir": "karavi/karavi.deploy.files/panel" }
+  }
+}

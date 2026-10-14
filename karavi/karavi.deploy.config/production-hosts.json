@@ -1,0 +1,10 @@
+{
+  "productId": "NTK.EBarCode",
+  "environments": {
+    "development": {},
+    "staging": {},
+    "production": {
+      "web": "https://ebarcode.ir"
+    }
+  }
+}

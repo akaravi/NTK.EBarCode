@@ -1,0 +1,6 @@
+{
+  "gates": [
+    { "id": "karavi-structure", "script": "karavi.scripts.tools/verify.karavi-structure.ps1", "required": true },
+    { "id": "no-secrets-in-config", "note": "Scan diff for Deploy_FTP.info, passwords, tokens", "required": true }
+  ]
+}
