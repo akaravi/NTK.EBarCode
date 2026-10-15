@@ -8,19 +8,20 @@
   color-scheme: dark;
 
   /* Core palette (Dark Mode / OLED-friendly) */
-  --background: #0f172a;          /* slate-900   page background */
-  --surface: #1b2336;             /* elevated card background   */
-  --surface-2: #232b40;           /* hover / active surface     */
-  --muted: #272f42;               /* muted area                 */
-  --text-primary: #f8fafc;        /* slate-50    primary text   */
-  --text-muted: #94a3b8;          /* slate-400   secondary text */
-  --border: #33415530;            /* soft translucent border    */
+  --background: #0f172a;
+  --surface: #1b2336;
+  --surface-2: #232b40;
+  --muted: #272f42;
+  --text-primary: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-secondary: #cbd5e1;
+  --border: rgba(71, 85, 105, 0.55);
   --border-strong: #475569;
   --ring: #22c55e;
 
   /* Accent / CTA */
-  --accent: #22c55e;              /* green-500 "run" accent     */
-  --on-accent: #0f172a;           /* dark text on accent        */
+  --accent: #22c55e;
+  --on-accent: #0f172a;
   --accent-hover: #37d669;
 
   /* Status colors */
@@ -53,6 +54,15 @@
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
+}
+
+::selection {
+  background: rgba(34, 197, 94, 0.3);
+  color: var(--text-primary);
+}
+
+@media (max-width: 640px) {
+  :root { --space-10: 32px; }
 }
 
 /* Global Reset */

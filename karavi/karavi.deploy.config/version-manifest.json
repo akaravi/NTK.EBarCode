@@ -1,6 +1,7 @@
 {
   "productId": "NTK.EBarCode",
   "versionPattern": "A.B.C.D",
+  "version": "1.26.1015.0",
   "hosts": {},
   "notes": "The repository currently contains no product source or version consumers; add verified consumers when they are introduced."
 }

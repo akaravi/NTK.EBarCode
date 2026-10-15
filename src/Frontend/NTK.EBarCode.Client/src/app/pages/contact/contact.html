@@ -1,6 +1,9 @@
-<div class="contact-container">
-  <h1>{{ i18n.t('contact.title') }}</h1>
-  <div class="contact-content">
+<article class="contact-container" aria-labelledby="contact-title">
+  <header>
+    <h1 id="contact-title">{{ i18n.t('contact.title') }}</h1>
+  </header>
+
+  <section class="contact-content" aria-label="{{ i18n.t('contact.title') }}">
     <p>{{ i18n.t('contact.copy') }} <a href="mailto:info@ebarcode.ir" dir="ltr">info@ebarcode.ir</a></p>
-  </div>
-</div>
+  </section>
+</article>

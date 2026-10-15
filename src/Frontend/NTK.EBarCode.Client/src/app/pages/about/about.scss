@@ -1,8 +1,7 @@
 .about-container {
   max-width: 992px;
   margin: 0 auto;
-  padding: var(--space-10) var(--space-4);
-  min-height: 100vh;
+  padding: var(--space-10) var(--space-4) calc(var(--space-10) + var(--space-6));
 }
 
 h1 {
