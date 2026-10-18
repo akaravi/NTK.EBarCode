@@ -91,3 +91,4 @@ karavi/karavi.deploy.config/Deploy_TestUsers.info
 karavi/karavi.deploy.config/deploy.secrets.json
 .omp/
 .freebuff/
+evidence/
